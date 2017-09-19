@@ -9,13 +9,22 @@
   </head>
   <body>
     <h1>Tic Tac Toe</h1>
+
+
+
     <div id = "gameBoard">
       <div v-for="(square, index) in game" v-on:click="selectSquare(index)" class="square">
         <transition name="fade">
-          <img v-if="square != null" v-bind:src="game[index]">
+          <img v-if="square.icon !== null" v-bind:src="game[index].icon">
         </transition>
       </div>
     </div>
+
+
+
+
+
+
       <div id = "modal" >
         <transition name="fade">
         <div id="darkener" v-if="show">

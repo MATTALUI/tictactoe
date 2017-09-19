@@ -1,16 +1,19 @@
+
+let initialBoard = [{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null}];
+
 const game = new Vue({
   el: "#gameBoard",
   data: {
-    game: new Array(9).fill(null),
+    game: initialBoard,
     current: 'X',
     gameOver: false
   },
   methods: {
     selectSquare: function(index){
       if(this.gameOver)return;
-      if(this.game[index]!=null)return;
+      if(this.game[index].icon!==null)return;
       let copy = [...this.game];
-      copy[index] = `assets/${this.current}.png`;
+      this.game[index].icon = `assets/${this.current}.png`;
       this.game = copy;
       this.checkWinningState(index)
       this.toggleTurn();
@@ -36,9 +39,9 @@ const game = new Vue({
       let didSomeBodyWin = false;
       winConditions.forEach((condition)=>{
         if(condition.indexOf(index)>-1){
-          let first = this.game[condition[0]];
-          let second = this.game[condition[1]];
-          let third = this.game[condition[2]];
+          let first = this.game[condition[0]].icon;
+          let second = this.game[condition[1]].icon;
+          let third = this.game[condition[2]].icon;
           if(first === second&&second===third){
             let winner = first.slice(7,8);
             didSomeBodyWin = true;
@@ -48,7 +51,7 @@ const game = new Vue({
           }
         }
       });
-      if(this.game.filter(square=>(square===null)).length ===0 && !didSomeBodyWin){
+      if(this.game.filter(square=>(square.icon===null)).length ===0 && !didSomeBodyWin){
         modal.message = 'Cat\'s Game!'
         modal.show = true;
       }
@@ -64,7 +67,7 @@ const modal = new Vue({
   },
   methods: {
     newGame: function(){
-      game.game = new Array(9).fill(null);
+      game.game = [{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null}];
       game.current = 'X';
       game.gameOver = false;
       this.show = false;
