@@ -1,19 +1,17 @@
-
-let initialBoard = [{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null}];
-
 const game = new Vue({
   el: "#gameBoard",
   data: {
-    game: initialBoard,
+    game: new Array(9).fill(null),
+    squareClasses: new Array(9).fill('square'),
     current: 'X',
     gameOver: false
   },
   methods: {
     selectSquare: function(index){
       if(this.gameOver)return;
-      if(this.game[index].icon!==null)return;
+      if(this.game[index]!=null)return;
       let copy = [...this.game];
-      this.game[index].icon = `assets/${this.current}.png`;
+      copy[index] = `assets/${this.current}.png`;
       this.game = copy;
       this.checkWinningState(index)
       this.toggleTurn();
@@ -39,10 +37,13 @@ const game = new Vue({
       let didSomeBodyWin = false;
       winConditions.forEach((condition)=>{
         if(condition.indexOf(index)>-1){
-          let first = this.game[condition[0]].icon;
-          let second = this.game[condition[1]].icon;
-          let third = this.game[condition[2]].icon;
+          let first = this.game[condition[0]];
+          let second = this.game[condition[1]];
+          let third = this.game[condition[2]];
           if(first === second&&second===third){
+            condition.forEach((index)=>{
+              this.squareClasses[index] = 'square winnerPath';
+            });
             let winner = first.slice(7,8);
             didSomeBodyWin = true;
             modal.message = `${winner}s Win!`
@@ -51,14 +52,15 @@ const game = new Vue({
           }
         }
       });
-      if(this.game.filter(square=>(square.icon===null)).length ===0 && !didSomeBodyWin){
+      if(this.game.filter(square=>(square===null)).length ===0 && !didSomeBodyWin){
         modal.message = 'Cat\'s Game!'
         modal.show = true;
       }
     }
   }
-
 });
+
+
 const modal = new Vue({
   el: '#modal',
   data: {
@@ -67,7 +69,8 @@ const modal = new Vue({
   },
   methods: {
     newGame: function(){
-      game.game = [{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null},{icon:null}];
+      game.game = new Array(9).fill(null);
+      game.squareClasses = new Array(9).fill('square');
       game.current = 'X';
       game.gameOver = false;
       this.show = false;

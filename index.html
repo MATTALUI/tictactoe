@@ -10,23 +10,17 @@
   <body>
     <h1>Tic Tac Toe</h1>
 
-
-
     <div id = "gameBoard">
-      <div v-for="(square, index) in game" v-on:click="selectSquare(index)" class="square">
+      <div v-for="(square, index) in game" v-on:click="selectSquare(index)" v-bind:class="squareClasses[index]">
         <transition name="fade">
-          <img v-if="square.icon !== null" v-bind:src="game[index].icon">
+          <img v-if="square !== null" v-bind:src="game[index]">
         </transition>
       </div>
     </div>
 
 
-
-
-
-
-      <div id = "modal" >
-        <transition name="fade">
+    <div id = "modal" >
+      <transition name="fade">
         <div id="darkener" v-if="show">
           <div id="modalContent">
             <h1 id="victor">{{message}}</h1>
@@ -37,10 +31,7 @@
           </div>
         </div>
       </transition>
-      </div>
-
-
-
+    </div>
 
 
     <script src="tic-tac-toe.js" charset="utf-8"></script>

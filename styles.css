@@ -24,7 +24,7 @@ button{
 }
 button:hover{
   transition: .3s;
-  background-color: black;
+  background-color: rgb(40,40,40);
   color: white;
 }
 
@@ -35,6 +35,9 @@ button:hover{
   width: 200px;
   float: left;
   background-color: gold;
+}
+.winnerPath{
+  background-color: darkgoldenrod;
 }
 .fade-enter-active {
   transition: opacity .3s
